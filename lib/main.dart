@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:on_bording/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,7 +7,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final onboarding = prefs.getBool("onboarding")??false;
-
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Color(0xff388175), // Set any color you want here
+    statusBarIconBrightness: Brightness.light, // Set to Brightness.dark for dark icons
+  ));
   runApp( MyApp(onboarding: onboarding));
 }
 

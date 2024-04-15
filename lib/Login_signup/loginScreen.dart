@@ -1,118 +1,144 @@
-import 'package:flutter/material.dart';
-import 'package:on_bording/Login_signup/Signup.dart';
+import 'dart:ui';
 
+import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:on_bording/Login_signup/Signup.dart';
+import 'package:on_bording/views/widgets/InputField.dart';
+import 'package:on_bording/views/widgets/RememberMeCheckBox.dart';
+
+import '../views/pages/FinfYourAccountScreen.dart';
 import '../views/pages/main_screen.dart';
 
-class loginScreen extends StatelessWidget {
-  const loginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+
     var height=MediaQuery.sizeOf(context).height;
 
     return Scaffold(
+
         body: Stack(
           children: [
             Container(
-              height: height*0.7,
+              height: height * 0.7,
               width: double.infinity,
               decoration: const BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Color(0xff388175),
-                  Color(0xff388175),
-                ]),
+                color: Color(0xff388175),
               ),
               child: const Padding(
-                padding: EdgeInsets.only(top: 60.0, left: 22),
-                child: Text(
-                  'Welcome Back!\n',
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                padding: EdgeInsets.symmetric(horizontal:24,vertical: 50), // Add padding for the overall column
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Welcome back!',
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(height: 5), // Spacing between the two texts
+                    Text(
+                      'Log back into your account',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
                 ),
               ),
             ),
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 150.0),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 25),
+
+            Padding(
+              padding:  EdgeInsets.only(top:height*0.15 ),
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 35),
+                  child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
-                          child: Center(
-                            child: Column(
-                              children: <Widget>[
-                                inputFile(label: "Email"),
-                                inputFile(label: "Password", obscureText: true),
-                              ],
-                            ),
-                          ),
+                        const Column(
+                          children: <Widget>[
+                            InputField(label: "Email",
+                            hintLabel: 'Email address',
+                            icon: Icons.email_outlined),
+                            InputField(
+                                hintLabel: 'Password',
+                                label: "Password", isPasswordField: true,icon: Icons.lock_outlined),
+                          ],
                         ),
                         const SizedBox(height: 20),
-                        const Align(
-                          alignment: Alignment.centerRight,
-                          child: Text('Forgot Password?', style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                            color: Color(0xff000000),
-                          )),
-                        ),
-                        const SizedBox(height: 50),
                         InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen(),));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => FindYourAccountScreen(),));
                           },
-                          child: Container(
-                            height: 60,
-                            width: 350,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xff388175),
-                                    Color(0xff388175),
-                                  ]
-                              ),
-                            ),
-                            child: const Center(child: Text('SIGN IN', style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white
-                            ))),
+                          child: const Align(
+                            alignment: Alignment.centerRight,
+                            child: Text('Forgot Password?', style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: Color(0xff1F1D1C),
+                            )),
                           ),
                         ),
-                        const SizedBox(height: 120),
-                         Align(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Text("Don't have account?", style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black87
-                              )),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp(),));
-                                },
-                                child: const Text("Sign up", style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 17,
-                                    color: Colors.black87
-                                )),
+                         const CustomSwitchTile(),
+                        const SizedBox(height: 50),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen(),));
+                          },
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(vertical: 15)),
+                            fixedSize: MaterialStateProperty.all<Size>(const Size(double.maxFinite, 48)), // Adjusts button size within the container
+                            backgroundColor: MaterialStateProperty.all<Color>(const Color(0xff388175)), // Makes the button itself transparent
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                            ],
+                            ),
                           ),
-                        )
+                          child: const Text(
+                            'SIGN IN',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 150),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           children: [
+                             const Text("Don't have account?", style: TextStyle(
+                               fontSize: 14,
+                                 fontWeight: FontWeight.w400,
+                                 color: Colors.black
+                             )),
+                             InkWell(
+                               onTap: () {
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp(),));
+                               },
+                               child: const Text("Sign up", style: TextStyle(
+                                   fontWeight: FontWeight.w700,
+                                   fontSize: 14,
+                                   color: Color(0xff388175)
+                               )),
+                             )
+                           ],
+                         ),
+
                       ],
                     ),
                   ),
@@ -122,38 +148,4 @@ class loginScreen extends StatelessWidget {
           ],
         ));
   }
-}
-
-Widget inputFile({required String label, bool obscureText = false}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: Colors.black87
-        ),
-      ),
-      const SizedBox(
-        height: 5,
-      ),
-      TextField(
-        obscureText: obscureText,
-        decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Colors.grey
-              ),
-            ),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey)
-            )
-        ),
-      ),
-      const SizedBox(height: 10),
-    ],
-  );
 }
